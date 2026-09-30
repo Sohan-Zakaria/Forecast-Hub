@@ -27,352 +27,168 @@ button{background:none;border:none;cursor:pointer;font:inherit;color:inherit}
   :root{ --u: min(100vw / 1357, 100vh / 871); }
 }
 
-/* ─── BASE ────────────────────────────────────────────────────────────────── */
+/* ─── BASE ───────────────────────────────────────────────────────────────── */
 html,body{
-  height:100%;
-  overflow:hidden;
-  background:#04121b;
-  color:#fff;
+  height:100%;overflow:hidden;background:#04121b;color:#fff;
   font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   font-feature-settings:"kern" 1;
 }
 
-/* ─── STAGE ───────────────────────────────────────────────────────────────── */
-.stage{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-}
-/* storm background */
+/* ─── STAGE ──────────────────────────────────────────────────────────────── */
+.stage{position:fixed;inset:0;overflow:hidden;}
 .stage::before{
-  content:'';
-  position:absolute;
-  inset:0;
+  content:'';position:absolute;inset:0;
   background-image:url('./assets/storm-background.jpg');
-  background-size:cover;
-  background-position:center 25%;
-  background-repeat:no-repeat;
-  z-index:0;
+  background-size:cover;background-position:center 25%;background-repeat:no-repeat;z-index:0;
 }
-/* vignette overlay */
 .stage::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:1;
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
   background:
-    linear-gradient(105deg, rgba(4,16,24,.34) 0%, rgba(4,16,24,.20) 40%, rgba(4,16,24,.06) 78%, transparent 100%),
-    linear-gradient(180deg, rgba(4,16,24,.12) 0%, transparent 22%),
-    linear-gradient(0deg, rgba(4,16,24,.07), rgba(4,16,24,.07));
+    linear-gradient(105deg,rgba(4,16,24,.34) 0%,rgba(4,16,24,.20) 40%,rgba(4,16,24,.06) 78%,transparent 100%),
+    linear-gradient(180deg,rgba(4,16,24,.12) 0%,transparent 22%),
+    linear-gradient(0deg,rgba(4,16,24,.07),rgba(4,16,24,.07));
 }
 
-/* ─── SIDEBAR ─────────────────────────────────────────────────────────────── */
+/* ─── SIDEBAR ────────────────────────────────────────────────────────────── */
 .sidebar{
-  position:absolute;
-  left:calc(16*var(--u));
-  top:calc(14*var(--u));
-  bottom:calc(7*var(--u));
-  width:calc(72*var(--u));
-  z-index:10;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding-top:calc(22*var(--u));
-  padding-bottom:calc(52*var(--u));
-  background: linear-gradient(180deg,
-    rgba(255,255,255,.125) 0%,
-    rgba(255,255,255,.135) 13%,
-    rgba(255,255,255,.098) 34%,
-    rgba(255,255,255,.092) 100%);
-  backdrop-filter: blur(calc(18*var(--u))) saturate(115%);
-  -webkit-backdrop-filter: blur(calc(18*var(--u))) saturate(115%);
+  position:absolute;left:calc(16*var(--u));top:calc(14*var(--u));bottom:calc(7*var(--u));
+  width:calc(72*var(--u));z-index:10;
+  display:flex;flex-direction:column;align-items:center;
+  padding-top:calc(22*var(--u));padding-bottom:calc(52*var(--u));
+  background:linear-gradient(180deg,rgba(255,255,255,.125) 0%,rgba(255,255,255,.135) 13%,rgba(255,255,255,.098) 34%,rgba(255,255,255,.092) 100%);
+  backdrop-filter:blur(calc(18*var(--u))) saturate(115%);
+  -webkit-backdrop-filter:blur(calc(18*var(--u))) saturate(115%);
   border-radius:calc(26*var(--u));
-  animation: slideL .92s var(--e-out) .05s both;
+  animation:slideL .92s var(--e-out) .05s both;
 }
-/* active pip */
 .sidebar .pip{
-  position:absolute;
-  left:calc(-2*var(--u));
-  top:calc(131*var(--u));
-  width:calc(5*var(--u));
-  height:calc(29*var(--u));
-  border-radius:calc(3*var(--u));
-  background:#fff;
+  position:absolute;left:calc(-2*var(--u));
+  width:calc(5*var(--u));height:calc(29*var(--u));
+  border-radius:calc(3*var(--u));background:#fff;
   box-shadow:0 0 calc(10*var(--u)) rgba(255,255,255,.55);
-  animation: growY .50s var(--e-out) .68s both;
   transform-origin:top center;
+  animation:growY .50s var(--e-out) .68s both;
+  /* top is driven by JS via --pip-top custom prop */
+  top:var(--pip-top, calc(131*var(--u)));
+  transition:top .45s var(--e-out);
 }
-/* logo */
 .logo{
-  width:calc(40*var(--u));
-  height:calc(40*var(--u));
-  animation: popIn .70s var(--e-out) .26s both;
-  flex-shrink:0;
+  width:calc(40*var(--u));height:calc(40*var(--u));
+  animation:popIn .70s var(--e-out) .26s both;flex-shrink:0;
 }
-/* nav */
 .nav{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:calc(43*var(--u));
-  margin-top:calc(57.5*var(--u));
+  display:flex;flex-direction:column;align-items:center;
+  gap:calc(43*var(--u));margin-top:calc(57.5*var(--u));
 }
 .nav a{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:calc(40*var(--u));
-  height:calc(40*var(--u));
-  opacity:.6;
-  transition:opacity .2s, transform .2s;
+  display:flex;align-items:center;justify-content:center;
+  width:calc(40*var(--u));height:calc(40*var(--u));
+  opacity:.6;transition:opacity .2s,transform .2s;
 }
-.nav a[aria-current="page"],
-.nav a:hover{
-  opacity:1;
-}
-.nav a:hover{
-  transform:translateY(calc(-1*var(--u)));
-}
-.nav a svg{
-  width:calc(23*var(--u));
-  height:calc(23*var(--u));
-}
-/* nav staggered rise */
+.nav a[aria-current="page"],.nav a.active{opacity:1;}
+.nav a:hover{opacity:1;transform:translateY(calc(-1*var(--u)));}
+.nav a svg{width:calc(23*var(--u));height:calc(23*var(--u));}
 .nav a:nth-child(1){animation:riseIn .60s var(--e-out) .36s both}
 .nav a:nth-child(2){animation:riseIn .60s var(--e-out) .41s both}
 .nav a:nth-child(3){animation:riseIn .60s var(--e-out) .46s both}
 .nav a:nth-child(4){animation:riseIn .60s var(--e-out) .51s both}
 .nav a:nth-child(5){animation:riseIn .60s var(--e-out) .56s both}
-/* logout */
 .logout{
-  margin-top:auto;
-  opacity:.5;
-  transition:opacity .2s;
+  margin-top:auto;opacity:.5;transition:opacity .2s;
   animation:riseIn .60s var(--e-out) .70s both;
 }
-.logout:hover{opacity:1}
-.logout svg{
-  width:calc(23*var(--u));
-  height:calc(23*var(--u));
+.logout:hover{opacity:1;}
+.logout svg{width:calc(23*var(--u));height:calc(23*var(--u));}
+:focus-visible{outline:calc(2*var(--u)) solid #fff;outline-offset:calc(2*var(--u));}
+
+/* ─── TAB PANELS ─────────────────────────────────────────────────────────── */
+.tab-panel{
+  position:absolute;inset:0;z-index:5;
+  pointer-events:none;opacity:0;
+  transition:opacity .35s var(--e-soft);
 }
-:focus-visible{
-  outline:calc(2*var(--u)) solid #fff;
-  outline-offset:calc(2*var(--u));
+.tab-panel.active{
+  pointer-events:auto;opacity:1;
 }
 
-/* ─── HEADER ─────────────────────────────────────────────────────────────── */
+/* ─── HEADER (inside each panel) ────────────────────────────────────────── */
 .header{
-  position:absolute;
-  top:calc(22*var(--u));
-  left:calc(126*var(--u));
-  right:calc(37*var(--u));
-  height:calc(52*var(--u));
-  z-index:10;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  position:absolute;top:calc(22*var(--u));left:calc(126*var(--u));right:calc(37*var(--u));
+  height:calc(52*var(--u));z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.header-left{}
-.hello{
-  font-size:calc(16*var(--u));
-  font-weight:400;
-  color:rgba(255,255,255,.93);
-  display:block;
-  animation:riseIn .70s var(--e-out) .14s both;
-}
-.who{
-  font-size:calc(19.5*var(--u));
-  font-weight:700;
-  letter-spacing:calc(-.35*var(--u));
-  margin-top:calc(3*var(--u));
-  display:block;
-  animation:riseIn .80s var(--e-out) .22s both;
-}
-.header-tools{
-  display:flex;
-  align-items:center;
-  gap:calc(16*var(--u));
-}
+.hello{font-size:calc(16*var(--u));font-weight:400;color:rgba(255,255,255,.93);display:block;animation:riseIn .70s var(--e-out) .14s both;}
+.who{font-size:calc(19.5*var(--u));font-weight:700;letter-spacing:calc(-.35*var(--u));margin-top:calc(3*var(--u));display:block;animation:riseIn .80s var(--e-out) .22s both;}
+.header-tools{display:flex;align-items:center;gap:calc(16*var(--u));}
 .tool{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:calc(52*var(--u));
-  height:calc(52*var(--u));
-  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  width:calc(52*var(--u));height:calc(52*var(--u));border-radius:50%;
   background:rgba(255,255,255,.15);
   backdrop-filter:blur(calc(16*var(--u))) saturate(115%);
   -webkit-backdrop-filter:blur(calc(16*var(--u))) saturate(115%);
-  transition:background .2s;
-  cursor:pointer;
-  position:relative;
-  overflow:hidden;
+  transition:background .2s;cursor:pointer;position:relative;overflow:hidden;
 }
-.tool:hover{background:rgba(255,255,255,.24)}
-.tool svg{
-  width:calc(22*var(--u));
-  height:calc(22*var(--u));
-}
+.tool:hover{background:rgba(255,255,255,.24);}
+.tool svg{width:calc(22*var(--u));height:calc(22*var(--u));}
 .tool:nth-child(1){animation:popIn .58s var(--e-out) .30s both}
 .tool:nth-child(2){animation:popIn .58s var(--e-out) .365s both}
 .tool:nth-child(3){animation:popIn .58s var(--e-out) .43s both}
 .tool:nth-child(4){animation:popIn .58s var(--e-out) .495s both}
-/* avatar tool */
-.tool.avatar-tool{
-  padding:0;
-  overflow:hidden;
-}
-.tool.avatar-tool img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-}
-.tool.avatar-tool svg.avatar-fb{
-  width:calc(32*var(--u));
-  height:calc(32*var(--u));
-}
+.tool.avatar-tool{padding:0;overflow:hidden;}
+.tool.avatar-tool img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.tool.avatar-tool svg.avatar-fb{width:calc(32*var(--u));height:calc(32*var(--u));}
 
-/* ─── HERO ────────────────────────────────────────────────────────────────── */
-.hero{
-  position:absolute;
-  left:calc(126*var(--u));
-  top:calc(136*var(--u));
-  max-width:calc(560*var(--u));
-  z-index:10;
-}
-/* Chip */
+/* ─── HERO ───────────────────────────────────────────────────────────────── */
+.hero{position:absolute;left:calc(126*var(--u));top:calc(136*var(--u));max-width:calc(560*var(--u));z-index:10;}
 .chip{
-  display:inline-flex;
-  align-items:center;
-  height:calc(36*var(--u));
-  border-radius:calc(18*var(--u));
-  padding:0 calc(15*var(--u));
+  display:inline-flex;align-items:center;height:calc(36*var(--u));
+  border-radius:calc(18*var(--u));padding:0 calc(15*var(--u));
   background:rgba(255,255,255,.175);
   backdrop-filter:blur(calc(16*var(--u))) saturate(115%);
   -webkit-backdrop-filter:blur(calc(16*var(--u))) saturate(115%);
-  font-size:calc(13*var(--u));
-  font-weight:500;
-  letter-spacing:calc(.2*var(--u));
-  position:relative;
-  overflow:hidden;
+  font-size:calc(13*var(--u));font-weight:500;letter-spacing:calc(.2*var(--u));
+  position:relative;overflow:hidden;
   animation:wipeRight .80s var(--e-out) .44s both;
 }
-/* chip sheen */
 .chip::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  width:38%;
-  background:linear-gradient(100deg, transparent 0%, rgba(255,255,255,.17) 50%, transparent 100%);
+  content:'';position:absolute;inset:0;width:38%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.17) 50%,transparent 100%);
   transform:translate3d(-150%,0,0) skewX(-18deg);
   animation:sheen 1.15s var(--e-soft) 2.55s 1 both;
 }
-/* headline */
 h1{
-  font-family:'Inter Tight','Inter',sans-serif;
-  font-weight:500;
-  font-size:calc(63*var(--u));
-  line-height:calc(78*var(--u));
-  letter-spacing:calc(.25*var(--u));
-  margin-top:calc(18*var(--u));
-  overflow:hidden;
+  font-family:'Inter Tight','Inter',sans-serif;font-weight:500;
+  font-size:calc(63*var(--u));line-height:calc(78*var(--u));
+  letter-spacing:calc(.25*var(--u));margin-top:calc(18*var(--u));
 }
-.ln{
-  display:block;
-  overflow:hidden;
-}
-.ln span{
-  display:block;
-  animation:lineUp 1.05s var(--e-out) var(--d,0s) both;
-}
+.ln{display:block;overflow:hidden;}
+.ln span{display:block;animation:lineUp 1.05s var(--e-out) var(--d,0s) both;}
 .ln:nth-child(1) span{--d:.56s}
 .ln:nth-child(2) span{--d:.67s}
-/* blurb */
 .blurb{
-  width:calc(480*var(--u));
-  font-size:calc(15.2*var(--u));
-  line-height:calc(24*var(--u));
-  font-weight:500;
-  letter-spacing:calc(-.3*var(--u));
-  color:rgba(255,255,255,.95);
-  margin-top:calc(26*var(--u));
-  animation:wipeDown .90s var(--e-soft) .90s both;
+  width:calc(480*var(--u));font-size:calc(15.2*var(--u));line-height:calc(24*var(--u));
+  font-weight:500;letter-spacing:calc(-.3*var(--u));color:rgba(255,255,255,.95);
+  margin-top:calc(26*var(--u));animation:wipeDown .90s var(--e-soft) .90s both;
 }
 
 /* ─── FORECAST STRIP ─────────────────────────────────────────────────────── */
-.forecast{
-  position:absolute;
-  left:calc(126*var(--u));
-  right:calc(396*var(--u));
-  bottom:calc(99*var(--u));
-  z-index:10;
-}
-.temps{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  padding:0 calc(4*var(--u));
-}
-.temp-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:calc(10*var(--u));
-}
-.temp-item svg{
-  width:calc(36*var(--u));
-  height:calc(36*var(--u));
-  opacity:.9;
-}
-.temp-item .tv{
-  font-size:calc(37*var(--u));
-  font-weight:400;
-  letter-spacing:calc(-.7*var(--u));
-  line-height:1;
-}
-/* temp rise stagger */
+.forecast{position:absolute;left:calc(126*var(--u));right:calc(396*var(--u));bottom:calc(99*var(--u));z-index:10;}
+.temps{display:flex;justify-content:space-between;align-items:flex-end;padding:0 calc(4*var(--u));}
+.temp-item{display:flex;flex-direction:column;align-items:center;gap:calc(10*var(--u));}
+.temp-item svg{width:calc(36*var(--u));height:calc(36*var(--u));opacity:.9;}
+.temp-item .tv{font-size:calc(37*var(--u));font-weight:400;letter-spacing:calc(-.7*var(--u));line-height:1;}
 .temp-item:nth-child(1){animation:riseIn .65s var(--e-out) 1.26s both}
 .temp-item:nth-child(2){animation:riseIn .65s var(--e-out) 1.33s both}
 .temp-item:nth-child(3){animation:riseIn .65s var(--e-out) 1.40s both}
 .temp-item:nth-child(4){animation:riseIn .65s var(--e-out) 1.47s both}
 .temp-item:nth-child(5){animation:riseIn .65s var(--e-out) 1.54s both}
 .temp-item:nth-child(6){animation:riseIn .65s var(--e-out) 1.61s both}
-/* wave chart */
-.chart-wrap{
-  position:relative;
-  width:100%;
-  margin-top:calc(43*var(--u));
-}
-.chart-wrap svg.wave{
-  width:100%;
-  height:calc(230*var(--u));
-  display:block;
-  overflow:visible;
-}
-/* day labels */
-.days{
-  display:flex;
-  justify-content:space-between;
-  margin-top:calc(-31*var(--u));
-  padding:0 calc(4*var(--u));
-  position:relative;
-  z-index:2;
-}
-.days span{
-  font-size:calc(18*var(--u));
-  font-weight:500;
-  color:rgba(255,255,255,.88);
-  min-width:calc(95*var(--u));
-  text-align:center;
-}
-.days span.on{
-  color:#fff;
-  font-weight:600;
-}
+.chart-wrap{position:relative;width:100%;margin-top:calc(43*var(--u));}
+.chart-wrap svg.wave{width:100%;height:calc(230*var(--u));display:block;overflow:visible;}
+.days{display:flex;justify-content:space-between;margin-top:calc(-31*var(--u));padding:0 calc(4*var(--u));position:relative;z-index:2;}
+.days span{font-size:calc(18*var(--u));font-weight:500;color:rgba(255,255,255,.88);min-width:calc(95*var(--u));text-align:center;}
+.days span.on{color:#fff;font-weight:600;}
 .days span:nth-child(1){animation:riseIn .60s var(--e-out) 2.10s both}
 .days span:nth-child(2){animation:riseIn .60s var(--e-out) 2.155s both}
 .days span:nth-child(3){animation:riseIn .60s var(--e-out) 2.21s both}
@@ -382,324 +198,231 @@ h1{
 
 /* ─── RIGHT RAIL ─────────────────────────────────────────────────────────── */
 .rail{
-  position:absolute;
-  right:calc(38*var(--u));
-  top:calc(134*var(--u));
-  bottom:calc(95*var(--u));
-  width:calc(310*var(--u));
-  z-index:10;
-  display:flex;
-  flex-direction:column;
-  gap:calc(20*var(--u));
+  position:absolute;right:calc(38*var(--u));top:calc(134*var(--u));bottom:calc(95*var(--u));
+  width:calc(310*var(--u));z-index:10;
+  display:flex;flex-direction:column;gap:calc(20*var(--u));
 }
-
-/* shared card glass */
 .card{
-  position:relative;
-  overflow:hidden;
-  border-radius:calc(24*var(--u));
-  background:linear-gradient(180deg,
-    rgba(255,255,255,.20) 0%,
-    rgba(255,255,255,.258) 24%,
-    rgba(255,255,255,.252) 78%,
-    rgba(255,255,255,.232) 100%);
+  position:relative;overflow:hidden;border-radius:calc(24*var(--u));
+  background:linear-gradient(180deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.258) 24%,rgba(255,255,255,.252) 78%,rgba(255,255,255,.232) 100%);
   backdrop-filter:blur(calc(26*var(--u))) saturate(118%);
   -webkit-backdrop-filter:blur(calc(26*var(--u))) saturate(118%);
   padding:calc(20*var(--u));
 }
-/* card sheen */
 .card::after{
-  content:'';
-  position:absolute;
-  top:0;bottom:0;
-  width:38%;
-  background:linear-gradient(100deg, transparent 0%, rgba(255,255,255,.17) 50%, transparent 100%);
+  content:'';position:absolute;top:0;bottom:0;width:38%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.17) 50%,transparent 100%);
   transform:translate3d(-150%,0,0) skewX(-18deg);
-  pointer-events:none;
-  animation:sheen 1.15s var(--e-soft) 2.55s 1 both;
+  pointer-events:none;animation:sheen 1.15s var(--e-soft) 2.55s 1 both;
 }
-/* card slide-right stagger */
-.card:nth-child(1){animation:slideR .95s var(--e-out) .80s both;border-radius:calc(26*var(--u))}
+.card:nth-child(1){animation:slideR .95s var(--e-out) .80s both;border-radius:calc(26*var(--u));}
 .card:nth-child(2){animation:slideR .95s var(--e-out) .92s both}
 .card:nth-child(3){animation:slideR .95s var(--e-out) 1.03s both}
 .card:nth-child(4){animation:slideR .95s var(--e-out) 1.14s both}
 
-/* BIG CARD */
-.card.big{
-  flex:1;
-  display:flex;
-  flex-direction:column;
+/* big card */
+.card.big{flex:1;display:flex;flex-direction:column;}
+.card-place{display:flex;align-items:center;gap:calc(7*var(--u));font-size:calc(13*var(--u));font-weight:500;color:rgba(255,255,255,.82);animation:riseIn .60s var(--e-out) 1.04s both;}
+.card-place svg{width:calc(14*var(--u));height:calc(14*var(--u));opacity:.8;flex-shrink:0;}
+.big-temp-wrap{margin-top:calc(12*var(--u));animation:riseIn .65s var(--e-out) 1.10s both;}
+.big-temp{font-family:'Inter Tight','Inter',sans-serif;font-size:calc(92*var(--u));font-weight:500;letter-spacing:calc(-4.4*var(--u));line-height:.95;}
+.big-temp i{font-style:normal;font-size:calc(48*var(--u));letter-spacing:0;vertical-align:super;margin-left:calc(4*var(--u));}
+.metrics{display:flex;gap:calc(20*var(--u));margin-top:auto;padding-top:calc(20*var(--u));animation:riseIn .60s var(--e-out) 1.20s both;}
+.metric{display:flex;align-items:center;gap:calc(6*var(--u));}
+.metric svg{width:calc(16*var(--u));height:calc(16*var(--u));opacity:.75;flex-shrink:0;}
+.metric-val{font-size:calc(13.5*var(--u));font-weight:600;letter-spacing:calc(-.2*var(--u));}
+.metric-lbl{font-size:calc(11*var(--u));font-weight:400;color:rgba(255,255,255,.65);margin-left:calc(2*var(--u));}
+
+/* row cards */
+.card.row{height:calc(120*var(--u));display:flex;align-items:center;justify-content:space-between;padding:calc(16*var(--u)) calc(20*var(--u));}
+.row-region{font-size:calc(11*var(--u));font-weight:500;color:rgba(255,255,255,.60);text-transform:uppercase;letter-spacing:calc(.8*var(--u));}
+.row-city{font-size:calc(15.5*var(--u));font-weight:600;margin-top:calc(5*var(--u));}
+.row-cond{font-size:calc(12.5*var(--u));font-weight:400;color:rgba(255,255,255,.70);margin-top:calc(4*var(--u));}
+.row-right{display:flex;flex-direction:column;align-items:center;gap:calc(6*var(--u));}
+.row-right svg{width:calc(38*var(--u));height:calc(38*var(--u));}
+.row-temp{font-size:calc(28*var(--u));font-weight:500;letter-spacing:calc(-.5*var(--u));}
+
+/* ─── PANEL CONTENT (non-dashboard panels) ───────────────────────────────── */
+.panel-content{
+  position:absolute;top:calc(100*var(--u));left:calc(126*var(--u));right:calc(37*var(--u));
+  bottom:calc(30*var(--u));z-index:10;overflow:hidden;
 }
-.card-place{
-  display:flex;
-  align-items:center;
-  gap:calc(7*var(--u));
-  font-size:calc(13*var(--u));
-  font-weight:500;
-  color:rgba(255,255,255,.82);
-  animation:riseIn .60s var(--e-out) 1.04s both;
-}
-.card-place svg{
-  width:calc(14*var(--u));
-  height:calc(14*var(--u));
-  opacity:.8;
-  flex-shrink:0;
-}
-.big-temp-wrap{
-  margin-top:calc(12*var(--u));
-  animation:riseIn .65s var(--e-out) 1.10s both;
-}
-.big-temp{
-  font-family:'Inter Tight','Inter',sans-serif;
-  font-size:calc(92*var(--u));
-  font-weight:500;
-  letter-spacing:calc(-4.4*var(--u));
-  line-height:.95;
-}
-.big-temp i{
-  font-style:normal;
-  font-size:calc(48*var(--u));
-  letter-spacing:0;
-  vertical-align:super;
-  margin-left:calc(4*var(--u));
-}
-.metrics{
-  display:flex;
-  gap:calc(20*var(--u));
-  margin-top:calc(auto);
-  padding-top:calc(20*var(--u));
-  animation:riseIn .60s var(--e-out) 1.20s both;
-}
-.metric{
-  display:flex;
-  align-items:center;
-  gap:calc(6*var(--u));
-}
-.metric svg{
-  width:calc(16*var(--u));
-  height:calc(16*var(--u));
-  opacity:.75;
-  flex-shrink:0;
-}
-.metric-val{
-  font-size:calc(13.5*var(--u));
-  font-weight:600;
-  letter-spacing:calc(-.2*var(--u));
-}
-.metric-lbl{
-  font-size:calc(11*var(--u));
-  font-weight:400;
-  color:rgba(255,255,255,.65);
-  margin-left:calc(2*var(--u));
+.panel-title{
+  font-family:'Inter Tight','Inter',sans-serif;font-size:calc(32*var(--u));font-weight:500;
+  letter-spacing:calc(-.5*var(--u));margin-bottom:calc(24*var(--u));
+  animation:riseIn .70s var(--e-out) .10s both;
 }
 
-/* ROW CARDS */
-.card.row{
-  height:calc(120*var(--u));
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:calc(16*var(--u)) calc(20*var(--u));
+/* ── REPORTS ── */
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(16*var(--u));margin-bottom:calc(20*var(--u));}
+.report-stat.card{padding:calc(18*var(--u));}
+.report-stat.card:nth-child(1){animation:slideR .80s var(--e-out) .18s both}
+.report-stat.card:nth-child(2){animation:slideR .80s var(--e-out) .26s both}
+.report-stat.card:nth-child(3){animation:slideR .80s var(--e-out) .34s both}
+.report-stat.card:nth-child(4){animation:slideR .80s var(--e-out) .42s both}
+.rs-label{font-size:calc(11.5*var(--u));font-weight:500;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:calc(.7*var(--u));}
+.rs-value{font-family:'Inter Tight','Inter',sans-serif;font-size:calc(48*var(--u));font-weight:500;letter-spacing:calc(-2*var(--u));margin-top:calc(8*var(--u));line-height:1;}
+.rs-value i{font-style:normal;font-size:calc(22*var(--u));vertical-align:super;margin-left:calc(2*var(--u));letter-spacing:0;}
+.rs-sub{font-size:calc(12*var(--u));color:rgba(255,255,255,.55);margin-top:calc(10*var(--u));}
+.report-bar-wrap.card{animation:riseIn .80s var(--e-out) .50s both;}
+.rbar-title{font-size:calc(13*var(--u));font-weight:500;color:rgba(255,255,255,.70);margin-bottom:calc(20*var(--u));}
+.rbar-chart{display:flex;align-items:flex-end;gap:calc(12*var(--u));height:calc(130*var(--u));}
+.rbar{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  gap:calc(8*var(--u));height:100%;
 }
-.row-left{}
-.row-region{
-  font-size:calc(11*var(--u));
-  font-weight:500;
-  color:rgba(255,255,255,.60);
-  text-transform:uppercase;
-  letter-spacing:calc(.8*var(--u));
+.rbar::before{
+  content:'';flex:none;width:100%;border-radius:calc(6*var(--u));
+  height:var(--h,30%);
+  background:rgba(255,255,255,.30);
+  transition:background .2s;
 }
-.row-city{
-  font-size:calc(15.5*var(--u));
-  font-weight:600;
-  margin-top:calc(5*var(--u));
-}
-.row-cond{
-  font-size:calc(12.5*var(--u));
-  font-weight:400;
-  color:rgba(255,255,255,.70);
-  margin-top:calc(4*var(--u));
-}
-.row-right{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:calc(6*var(--u));
-}
-.row-right svg{
-  width:calc(38*var(--u));
-  height:calc(38*var(--u));
-}
-.row-temp{
-  font-size:calc(28*var(--u));
-  font-weight:500;
-  letter-spacing:calc(-.5*var(--u));
-}
-/* row card children stagger */
-.card.row:nth-child(2) .row-left{animation:riseIn .60s var(--e-out) 1.15s both}
-.card.row:nth-child(2) .row-right{animation:riseIn .60s var(--e-out) 1.20s both}
-.card.row:nth-child(3) .row-left{animation:riseIn .60s var(--e-out) 1.26s both}
-.card.row:nth-child(3) .row-right{animation:riseIn .60s var(--e-out) 1.31s both}
-.card.row:nth-child(4) .row-left{animation:riseIn .60s var(--e-out) 1.32s both}
-.card.row:nth-child(4) .row-right{animation:riseIn .60s var(--e-out) 1.37s both}
+.rbar.active::before{background:rgba(255,255,255,.85);}
+.rbar:hover::before{background:rgba(255,255,255,.55);}
+.rbar span{font-size:calc(11.5*var(--u));color:rgba(255,255,255,.60);font-weight:500;}
+.rbar.active span{color:#fff;}
 
-/* ─── KEYFRAMES ───────────────────────────────────────────────────────────── */
-@keyframes riseIn{
-  from{opacity:0;transform:translateY(var(--ry,14px))}
-  to{opacity:1;transform:none}
-}
-@keyframes slideL{
-  from{opacity:0;transform:translateX(-26px)}
-  to{opacity:1;transform:none}
-}
-@keyframes slideR{
-  from{opacity:0;transform:translateX(30px) scale(.985)}
-  to{opacity:1;transform:none}
-}
-@keyframes popIn{
-  from{opacity:0;transform:scale(.7)}
-  to{opacity:1;transform:none}
-}
-@keyframes growY{
-  from{transform:scaleY(0)}
-  to{transform:none}
-}
-@keyframes lineUp{
-  from{transform:translateY(115%)}
-  to{transform:none}
-}
-@keyframes wipeDown{
-  from{clip-path:inset(0 0 100% 0)}
-  to{clip-path:inset(0 0 0% 0)}
-}
-@keyframes wipeRight{
-  from{clip-path:inset(0 100% 0 0)}
-  to{clip-path:inset(0 0% 0 0)}
-}
-@keyframes sheen{
-  from{transform:translate3d(-150%,0,0) skewX(-18deg)}
-  to{transform:translate3d(260%,0,0) skewX(-18deg)}
-}
-@keyframes drawLine{
-  from{stroke-dashoffset:1}
-  to{stroke-dashoffset:0}
-}
-@keyframes wipeX{
-  from{transform:scaleX(0)}
-  to{transform:scaleX(1)}
-}
-@keyframes growX{
-  from{transform:scaleX(0)}
-  to{transform:none}
-}
+/* ── EXPLORE ── */
+.explore-list{display:grid;grid-template-columns:repeat(2,1fr);gap:calc(16*var(--u));}
+.explore-card.card{animation:slideR .80s var(--e-out) var(--ed,.20s) both;}
+.explore-card.card:nth-child(1){--ed:.16s}
+.explore-card.card:nth-child(2){--ed:.26s}
+.explore-card.card:nth-child(3){--ed:.36s}
+.explore-card.card:nth-child(4){--ed:.46s}
+.ec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:calc(18*var(--u));}
+.ec-region{font-size:calc(11*var(--u));font-weight:500;color:rgba(255,255,255,.60);text-transform:uppercase;letter-spacing:calc(.7*var(--u));}
+.ec-city{font-size:calc(18*var(--u));font-weight:600;margin-top:calc(5*var(--u));}
+.ec-bottom{display:flex;align-items:center;justify-content:space-between;}
+.ec-temp{font-family:'Inter Tight','Inter',sans-serif;font-size:calc(38*var(--u));font-weight:500;letter-spacing:calc(-1.5*var(--u));}
+.ec-metrics{display:flex;flex-direction:column;gap:calc(5*var(--u));font-size:calc(12*var(--u));color:rgba(255,255,255,.70);}
+.ec-metrics span{display:flex;align-items:center;gap:calc(5*var(--u));}
 
-/* ─── WAVE CHART SVG animations ─── */
-.wline{
-  animation:drawLine 1.60s var(--e-pen) 1.50s both;
-  stroke-dasharray:1;
-  stroke-dashoffset:1;
-  pathLength:1;
+/* ── CALENDAR ── */
+.cal-grid.card{padding:calc(20*var(--u));animation:riseIn .80s var(--e-out) .16s both;}
+.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:calc(4*var(--u));margin-bottom:calc(12*var(--u));}
+.cal-head span{text-align:center;font-size:calc(12*var(--u));font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:calc(.5*var(--u));}
+.cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:calc(4*var(--u));}
+.cal-day{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:calc(3*var(--u));padding:calc(7*var(--u)) 0;
+  border-radius:calc(10*var(--u));
+  font-size:calc(13*var(--u));font-weight:500;
+  cursor:pointer;transition:background .18s;
 }
-#wclipr{
-  transform:scaleX(0);
-  transform-origin:left center;
-  animation:wipeX 1.42s var(--e-pen) 1.72s both;
+.cal-day:hover{background:rgba(255,255,255,.12);}
+.cal-day.dim{opacity:.3;}
+.cal-day.today{background:rgba(255,255,255,.22);font-weight:700;}
+
+/* ── SETTINGS ── */
+.settings-list.card{animation:riseIn .80s var(--e-out) .16s both;padding:0;}
+.setting-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(18*var(--u)) calc(22*var(--u));
+  border-bottom:1px solid rgba(255,255,255,.10);
 }
+.setting-row:last-child{border-bottom:none;}
+.sr-title{font-size:calc(14*var(--u));font-weight:600;}
+.sr-sub{font-size:calc(12*var(--u));color:rgba(255,255,255,.55);margin-top:calc(3*var(--u));}
+.sr-toggle-group{display:flex;gap:calc(6*var(--u));}
+.sr-opt{
+  padding:calc(6*var(--u)) calc(14*var(--u));border-radius:calc(10*var(--u));
+  font-size:calc(13*var(--u));font-weight:600;
+  background:rgba(255,255,255,.12);color:rgba(255,255,255,.55);
+  transition:background .18s,color .18s;cursor:pointer;
+}
+.sr-opt.active{background:rgba(255,255,255,.85);color:#04121b;}
+.sr-opt:hover:not(.active){background:rgba(255,255,255,.22);color:#fff;}
+/* toggle switch */
+.sr-switch{display:flex;align-items:center;cursor:pointer;}
+.sr-switch input{display:none;}
+.sw-track{
+  width:calc(46*var(--u));height:calc(26*var(--u));border-radius:calc(13*var(--u));
+  background:rgba(255,255,255,.20);position:relative;
+  transition:background .25s;
+}
+.sr-switch input:checked + .sw-track{background:rgba(255,255,255,.80);}
+.sw-thumb{
+  position:absolute;top:calc(3*var(--u));left:calc(3*var(--u));
+  width:calc(20*var(--u));height:calc(20*var(--u));border-radius:50%;
+  background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);
+  transition:transform .25s var(--e-out);
+}
+.sr-switch input:checked + .sw-track .sw-thumb{transform:translateX(calc(20*var(--u)));}
+.sr-switch input:not(:checked) + .sw-track .sw-thumb{background:rgba(255,255,255,.5);}
+.sr-loc,.sr-ver{font-size:calc(13*var(--u));color:rgba(255,255,255,.70);display:flex;align-items:center;gap:calc(6*var(--u));}
+
+/* ─── WAVE CHART animations ──────────────────────────────────────────────── */
+.wline{animation:drawLine 1.60s var(--e-pen) 1.50s both;stroke-dasharray:1;stroke-dashoffset:1;}
+#wclipr{transform:scaleX(0);transform-origin:0 115px;animation:wipeX 1.42s var(--e-pen) 1.72s both;}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────────────────────── */
+@keyframes riseIn{from{opacity:0;transform:translateY(var(--ry,14px))}to{opacity:1;transform:none}}
+@keyframes slideL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+@keyframes slideR{from{opacity:0;transform:translateX(30px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:none}}
+@keyframes lineUp{from{transform:translateY(115%)}to{transform:none}}
+@keyframes wipeDown{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
+@keyframes wipeRight{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0% 0 0)}}
+@keyframes sheen{from{transform:translate3d(-150%,0,0) skewX(-18deg)}to{transform:translate3d(260%,0,0) skewX(-18deg)}}
+@keyframes drawLine{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes wipeX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ─── REDUCED MOTION ─────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.001ms !important;
-    animation-delay:.001ms !important;
-    transition-duration:.001ms !important;
-  }
+  *,*::before,*::after{animation-duration:.001ms !important;animation-delay:.001ms !important;transition-duration:.001ms !important;}
   .chip::after,.card::after{display:none}
   .wline{stroke-dashoffset:0}
   #wclipr{transform:scaleX(1)}
 }
 
-/* ─── MOBILE ≤860px ─────────────────────────────────────────────────────── */
+/* ─── MOBILE ≤860px ──────────────────────────────────────────────────────── */
 @media (max-width:860px){
-  :root{ --u: min(100vw / 430, 1.22px); }
-  html,body{overflow:auto;height:auto}
-  .stage{position:relative;min-height:100vh;overflow:visible}
-  .stage::before{position:fixed}
+  :root{--u:min(100vw / 430, 1.22px);}
+  html,body{overflow:auto;height:auto;}
+  .stage{position:relative;min-height:100vh;overflow:visible;}
+  .stage::before{position:fixed;}
   .sidebar{
-    position:fixed;
-    left:0;right:0;bottom:0;top:auto;
-    width:auto;
-    height:calc(64*var(--u));
-    flex-direction:row;
-    justify-content:space-around;
-    padding:0 calc(8*var(--u));
-    padding-top:0;
-    padding-bottom:env(safe-area-inset-bottom,0px);
+    position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;
+    height:calc(64*var(--u));flex-direction:row;justify-content:space-around;
+    padding:0 calc(8*var(--u));padding-bottom:env(safe-area-inset-bottom,0px);
     border-radius:calc(26*var(--u)) calc(26*var(--u)) 0 0;
-    animation:riseIn .92s var(--e-out) .05s both;
-    z-index:100;
+    animation:riseIn .92s var(--e-out) .05s both;z-index:100;
   }
-  .sidebar .pip{display:none}
-  .logo{display:none}
-  .logout{margin:0}
-  .nav{flex-direction:row;gap:calc(8*var(--u));margin-top:0}
-  .header{
-    position:relative;
-    left:0;right:0;top:0;
-    margin:calc(20*var(--u)) calc(20*var(--u)) 0;
-    width:auto;
-    height:auto;
-    flex-wrap:wrap;
-    gap:calc(12*var(--u));
-  }
-  .hero{
-    position:relative;
-    left:0;top:0;
-    max-width:100%;
-    margin:calc(20*var(--u)) calc(20*var(--u)) 0;
-  }
-  .blurb{width:100%}
-  h1{font-size:calc(54*var(--u))}
-  .rail{
-    position:relative;
-    right:0;top:0;bottom:0;
-    width:auto;
-    margin:calc(20*var(--u));
-  }
-  .forecast{
-    position:relative;
-    left:0;right:0;bottom:0;
-    margin:calc(20*var(--u));
-    padding-bottom:calc(80*var(--u));
-  }
+  .sidebar .pip{display:none;}
+  .logo{display:none;}
+  .logout{margin:0;}
+  .nav{flex-direction:row;gap:calc(8*var(--u));margin-top:0;}
+  .header{position:relative;left:0;right:0;top:0;margin:calc(20*var(--u)) calc(20*var(--u)) 0;width:auto;height:auto;flex-wrap:wrap;gap:calc(12*var(--u));}
+  .hero{position:relative;left:0;top:0;max-width:100%;margin:calc(20*var(--u)) calc(20*var(--u)) 0;}
+  .blurb{width:100%;}
+  h1{font-size:calc(54*var(--u));}
+  .rail{position:relative;right:0;top:0;bottom:0;width:auto;margin:calc(20*var(--u));}
+  .forecast{position:relative;left:0;right:0;bottom:0;margin:calc(20*var(--u));padding-bottom:calc(80*var(--u));}
+  .panel-content{position:relative;top:0;left:0;right:0;bottom:0;margin:calc(16*var(--u));}
 }
-@media (max-width:420px){
-  :root{ --u: calc(100vw / 430); }
-}
+@media (max-width:420px){:root{--u:calc(100vw / 430);}}
 </style>
 </head>
 <body>
 
-<!-- ══ ICON SPRITE ═══════════════════════════════════════════════════════ -->
+<!-- ══ ICON SPRITE ════════════════════════════════════════════════════════ -->
 <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
 <defs>
-  <!-- i-grid: dashboard -->
   <symbol id="i-grid" viewBox="0 0 24 24" fill="none">
     <rect x="3" y="3" width="7" height="7" rx="1.5" fill="currentColor" opacity=".9"/>
     <rect x="14" y="3" width="7" height="7" rx="1.5" fill="currentColor" opacity=".9"/>
     <rect x="3" y="14" width="7" height="7" rx="1.5" fill="currentColor" opacity=".9"/>
     <rect x="14" y="14" width="7" height="7" rx="1.5" fill="currentColor" opacity=".9"/>
   </symbol>
-  <!-- i-chart: reports -->
   <symbol id="i-chart" viewBox="0 0 24 24" fill="none">
     <path d="M3 17l4.5-5 4 3.5 4-6 4 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M3 21h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
   </symbol>
-  <!-- i-globe: explore -->
   <symbol id="i-globe" viewBox="0 0 24 24" fill="none">
     <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
     <path d="M3 12h18M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
   </symbol>
-  <!-- i-cal: calendar -->
   <symbol id="i-cal" viewBox="0 0 24 24" fill="none">
     <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
     <path d="M3 10h18" stroke="currentColor" stroke-width="1.5"/>
@@ -708,70 +431,57 @@ h1{
     <circle cx="12" cy="15" r="1" fill="currentColor"/>
     <circle cx="16" cy="15" r="1" fill="currentColor"/>
   </symbol>
-  <!-- i-gear: settings -->
   <symbol id="i-gear" viewBox="0 0 24 24" fill="none">
     <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
     <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
   </symbol>
-  <!-- i-out: logout -->
   <symbol id="i-out" viewBox="0 0 24 24" fill="none">
     <path d="M16 17l5-5-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
     <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
-  <!-- i-plus: add -->
   <symbol id="i-plus" viewBox="0 0 24 24" fill="none">
     <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
   </symbol>
-  <!-- i-search -->
   <symbol id="i-search" viewBox="0 0 24 24" fill="none">
     <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
     <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
   </symbol>
-  <!-- i-bell -->
   <symbol id="i-bell" viewBox="0 0 24 24" fill="none">
     <path d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 00-4-5.66V5a2 2 0 10-4 0v.34A6 6 0 006 11v3.2a2 2 0 01-.6 1.4L4 17h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M9 17a3 3 0 006 0" stroke="currentColor" stroke-width="1.8"/>
   </symbol>
-  <!-- i-pin -->
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none">
     <path d="M12 2C8.69 2 6 4.69 6 8c0 5.25 6 13 6 13s6-7.75 6-13c0-3.31-2.69-6-6-6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
     <circle cx="12" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/>
   </symbol>
-  <!-- i-wind -->
   <symbol id="i-wind" viewBox="0 0 24 24" fill="none">
     <path d="M3 8h11a3 3 0 000-6 3 3 0 00-3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
     <path d="M3 12h14a3 3 0 000-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
     <path d="M3 16h8a3 3 0 110 6 3 3 0 01-3-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
   </symbol>
-  <!-- i-drop -->
   <symbol id="i-drop" viewBox="0 0 24 24" fill="none">
     <path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0c0-5-7-13-7-13z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
     <path d="M8.5 16a3.5 3.5 0 004 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
   </symbol>
-  <!-- i-gust: gust/speedometer -->
   <symbol id="i-gust" viewBox="0 0 24 24" fill="none">
     <path d="M5.6 19A8 8 0 1118.4 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
     <path d="M12 12l-3.5-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
     <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
   </symbol>
-  <!-- i-cloud: partly cloudy -->
   <symbol id="i-cloud" viewBox="0 0 40 40" fill="none">
     <circle cx="25" cy="16" r="7" fill="rgba(255,255,255,.85)"/>
     <circle cx="18" cy="20" r="8" fill="rgba(255,255,255,.9)"/>
     <rect x="10" y="24" width="22" height="8" rx="4" fill="rgba(255,255,255,.9)"/>
-    <!-- sun peek -->
     <circle cx="29" cy="10" r="5" fill="rgba(255,220,80,.85)"/>
     <path d="M29 2v2M29 18v2M21 10h-2M39 10h-2M23.5 4.5l1.4 1.4M34.1 15.1l1.4 1.4M23.5 15.5l1.4-1.4M34.1 4.9l1.4-1.4" stroke="rgba(255,220,80,.9)" stroke-width="1.5" stroke-linecap="round"/>
   </symbol>
-  <!-- i-cloud2: plain cloud -->
   <symbol id="i-cloud2" viewBox="0 0 40 40" fill="none">
     <circle cx="24" cy="17" r="8" fill="rgba(255,255,255,.7)"/>
     <circle cx="15" cy="21" r="9" fill="rgba(255,255,255,.75)"/>
     <rect x="6" y="26" width="28" height="8" rx="4" fill="rgba(255,255,255,.75)"/>
     <circle cx="14" cy="15" r="5" fill="rgba(255,255,255,.55)"/>
   </symbol>
-  <!-- i-hail -->
   <symbol id="i-hail" viewBox="0 0 40 40" fill="none">
     <circle cx="24" cy="14" r="8" fill="rgba(255,255,255,.65)"/>
     <circle cx="14" cy="18" r="9" fill="rgba(255,255,255,.7)"/>
@@ -781,13 +491,11 @@ h1{
     <circle cx="28" cy="35" r="2.5" fill="rgba(180,220,255,.9)"/>
     <path d="M14 29l-2 4M22 29l-2 4M30 29l-2 4" stroke="rgba(180,220,255,.6)" stroke-width="1.2" stroke-linecap="round"/>
   </symbol>
-  <!-- i-sun -->
   <symbol id="i-sun" viewBox="0 0 40 40" fill="none">
     <circle cx="20" cy="20" r="8" fill="rgba(255,220,80,.95)"/>
     <path d="M20 4v4M20 32v4M4 20h4M32 20h4M7.5 7.5l2.8 2.8M29.7 29.7l2.8 2.8M7.5 32.5l2.8-2.8M29.7 10.3l2.8-2.8" stroke="rgba(255,220,80,.9)" stroke-width="2" stroke-linecap="round"/>
     <circle cx="20" cy="20" r="5.5" fill="rgba(255,235,120,.7)"/>
   </symbol>
-  <!-- i-avatar: vector fallback -->
   <symbol id="i-avatar" viewBox="0 0 52 52" fill="none">
     <circle cx="26" cy="26" r="26" fill="rgba(255,255,255,.15)"/>
     <circle cx="26" cy="21" r="9" fill="rgba(255,255,255,.55)"/>
@@ -799,10 +507,9 @@ h1{
 <!-- ══ STAGE ══════════════════════════════════════════════════════════════ -->
 <div class="stage" role="main">
 
-  <!-- ── SIDEBAR ──────────────────────────────────────────────────────── -->
+  <!-- ── SIDEBAR (shared across all tabs) ─────────────────────────────── -->
   <nav class="sidebar" aria-label="Primary navigation">
-    <!-- active pip -->
-    <div class="pip" aria-hidden="true"></div>
+    <div class="pip" id="nav-pip" aria-hidden="true"></div>
 
     <!-- logo -->
     <svg class="logo" viewBox="0 0 40 40" fill="none" aria-label="Aurora Weather" role="img">
@@ -814,248 +521,388 @@ h1{
       <polyline points="4,29 8,27 12,30 16,27 20,30 24,27 28,30 32,27 36,29" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/>
     </svg>
 
-    <!-- nav links -->
-    <div class="nav">
-      <a href="#" aria-label="Dashboard" aria-current="page">
+    <!-- nav -->
+    <div class="nav" role="tablist">
+      <a href="#" role="tab" data-tab="dashboard" aria-label="Dashboard" aria-selected="true" class="active">
         <svg><use href="#i-grid"/></svg>
       </a>
-      <a href="#" aria-label="Reports">
+      <a href="#" role="tab" data-tab="reports" aria-label="Reports" aria-selected="false">
         <svg><use href="#i-chart"/></svg>
       </a>
-      <a href="#" aria-label="Explore regions">
+      <a href="#" role="tab" data-tab="explore" aria-label="Explore regions" aria-selected="false">
         <svg><use href="#i-globe"/></svg>
       </a>
-      <a href="#" aria-label="Calendar">
+      <a href="#" role="tab" data-tab="calendar" aria-label="Calendar" aria-selected="false">
         <svg><use href="#i-cal"/></svg>
       </a>
-      <a href="#" aria-label="Settings">
+      <a href="#" role="tab" data-tab="settings" aria-label="Settings" aria-selected="false">
         <svg><use href="#i-gear"/></svg>
       </a>
     </div>
 
-    <!-- logout -->
-    <button class="logout" aria-label="Sign out">
+    <button class="logout" aria-label="Sign out" onclick="alert('Signing out…')">
       <svg><use href="#i-out"/></svg>
     </button>
   </nav>
 
-  <!-- ── HEADER ───────────────────────────────────────────────────────── -->
-  <header class="header">
-    <div class="header-left">
-      <span class="hello">Welcome</span>
-      <span class="who">Calfin Danang</span>
-    </div>
-    <div class="header-tools">
-      <button class="tool" aria-label="Add location">
-        <svg><use href="#i-plus"/></svg>
-      </button>
-      <button class="tool" aria-label="Search">
-        <svg><use href="#i-search"/></svg>
-      </button>
-      <button class="tool" aria-label="Notifications">
-        <svg><use href="#i-bell"/></svg>
-      </button>
-      <button class="tool avatar-tool" aria-label="Profile: Calfin Danang">
-        <img
-          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces&q=80&auto=format"
-          alt="Calfin Danang"
-          loading="eager"
-          decoding="async"
-          onerror="this.remove()"
-          width="52" height="52"
-        >
-        <svg class="avatar-fb" aria-hidden="true" style="position:absolute"><use href="#i-avatar"/></svg>
-      </button>
-    </div>
-  </header>
+  <!-- ════════════════════════════════════════════════════════════════════
+       TAB PANELS
+       ════════════════════════════════════════════════════════════════════ -->
 
-  <!-- ── HERO ─────────────────────────────────────────────────────────── -->
-  <section class="hero" aria-labelledby="h1-main">
-    <!-- chip -->
-    <div class="chip" role="note">Weather Forecast</div>
+  <!-- ── PANEL: dashboard ─────────────────────────────────────────────── -->
+  <div data-panel="dashboard" class="tab-panel active" role="tabpanel" aria-label="Dashboard">
 
-    <!-- headline — keep typo "Strom" -->
-    <h1 id="h1-main">
-      <span class="ln"><span>Strom</span></span>
-      <span class="ln"><span>with Heavy Rain</span></span>
-    </h1>
-
-    <!-- blurb -->
-    <p class="blurb">
-      Partly cloudy with occasional snow showers. High around 50°F.<br>
-      Wind from the east 11 to 21 mph. Snow chance is 40%, with<br>
-      rainfall expected to be less than an inch.
-    </p>
-  </section>
-
-  <!-- ── FORECAST STRIP ───────────────────────────────────────────────── -->
-  <section class="forecast" aria-label="Hourly and daily forecast">
-    <!-- hourly temps -->
-    <div class="temps">
-      <div class="temp-item">
-        <svg aria-label="Partly cloudy"><use href="#i-cloud"/></svg>
-        <span class="tv">11°</span>
+    <header class="header">
+      <div class="header-left">
+        <span class="hello">Welcome</span>
+        <span class="who">Calfin Danang</span>
       </div>
-      <div class="temp-item">
-        <svg aria-label="Cloudy"><use href="#i-cloud2"/></svg>
-        <span class="tv">13°</span>
+      <div class="header-tools">
+        <button class="tool" aria-label="Add location"><svg><use href="#i-plus"/></svg></button>
+        <button class="tool" aria-label="Search"><svg><use href="#i-search"/></svg></button>
+        <button class="tool" aria-label="Notifications"><svg><use href="#i-bell"/></svg></button>
+        <button class="tool avatar-tool" aria-label="Profile: Calfin Danang">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces&q=80&auto=format" alt="Calfin Danang" loading="eager" decoding="async" onerror="this.remove()" width="52" height="52">
+          <svg class="avatar-fb" aria-hidden="true" style="position:absolute"><use href="#i-avatar"/></svg>
+        </button>
       </div>
-      <div class="temp-item">
-        <svg aria-label="Cloudy"><use href="#i-cloud2"/></svg>
-        <span class="tv">14°</span>
-      </div>
-      <div class="temp-item">
-        <svg aria-label="Hail"><use href="#i-hail"/></svg>
-        <span class="tv">10°</span>
-      </div>
-      <div class="temp-item">
-        <svg aria-label="Sunny"><use href="#i-sun"/></svg>
-        <span class="tv">19°</span>
-      </div>
-      <div class="temp-item">
-        <svg aria-label="Partly cloudy"><use href="#i-cloud"/></svg>
-        <span class="tv">12°</span>
-      </div>
-    </div>
+    </header>
 
-    <!-- wave chart -->
-    <div class="chart-wrap" aria-hidden="true">
-      <svg class="wave" viewBox="0 0 835 230" preserveAspectRatio="none">
-        <defs>
-          <!-- horizontal white opacity gradient for stroke -->
-          <linearGradient id="wg" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="white" stop-opacity=".0"/>
-            <stop offset="8%"   stop-color="white" stop-opacity=".9"/>
-            <stop offset="88%"  stop-color="white" stop-opacity=".9"/>
-            <stop offset="100%" stop-color="white" stop-opacity=".0"/>
-          </linearGradient>
-          <!-- vertical fade for fill -->
-          <linearGradient id="wfade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="white" stop-opacity=".18"/>
-            <stop offset="100%" stop-color="white" stop-opacity=".03"/>
-          </linearGradient>
-          <!-- wipe rect animated via CSS scaleX -->
-          <clipPath id="wclip">
-            <rect id="wclipr" x="0" y="0" width="835" height="230" transform-origin="0 115"/>
-          </clipPath>
-        </defs>
+    <section class="hero" aria-labelledby="h1-main">
+      <div class="chip" role="note">Weather Forecast</div>
+      <h1 id="h1-main">
+        <span class="ln"><span>Strom</span></span>
+        <span class="ln"><span>with Heavy Rain</span></span>
+      </h1>
+      <p class="blurb">
+        Partly cloudy with occasional snow showers. High around 50°F.<br>
+        Wind from the east 11 to 21 mph. Snow chance is 40%, with<br>
+        rainfall expected to be less than an inch.
+      </p>
+    </section>
 
-        <!-- fill area: shape path clipped by animated wipe rect -->
-        <path d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86 L835,230 L0,230 Z"
-              fill="url(#wfade)"
-              clip-path="url(#wclip)"/>
-
-        <!-- stroke outline: soft shadow layers then main -->
-        <!-- layer 1: thick, low opacity -->
-        <path class="wline" d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86"
-              fill="none"
-              stroke="url(#wg)"
-              stroke-width="6.2"
-              stroke-opacity=".17"
-              stroke-linecap="round"
-              pathLength="1"/>
-        <!-- layer 2: mid -->
-        <path class="wline" d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86"
-              fill="none"
-              stroke="url(#wg)"
-              stroke-width="4.6"
-              stroke-opacity=".26"
-              stroke-linecap="round"
-              pathLength="1"/>
-        <!-- layer 3: crisp top line -->
-        <path class="wline" d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86"
-              fill="none"
-              stroke="url(#wg)"
-              stroke-width="3.4"
-              stroke-opacity="1"
-              stroke-linecap="round"
-              pathLength="1"/>
-      </svg>
-    </div>
-
-    <!-- day labels -->
-    <div class="days">
-      <span>Sunday</span>
-      <span>Monday</span>
-      <span>Tuesday</span>
-      <span class="on">Wednesday</span>
-      <span>Thursday</span>
-      <span>Friday</span>
-    </div>
-  </section>
-
-  <!-- ── RIGHT RAIL ────────────────────────────────────────────────────── -->
-  <aside class="rail" aria-label="Location weather cards">
-
-    <!-- Card A: big -->
-    <div class="card big" role="region" aria-label="Central Jakarta weather">
-      <div class="card-place">
-        <svg aria-hidden="true"><use href="#i-pin"/></svg>
-        Central Jakarta
+    <section class="forecast" aria-label="Hourly and daily forecast">
+      <div class="temps">
+        <div class="temp-item"><svg aria-label="Partly cloudy"><use href="#i-cloud"/></svg><span class="tv">11°</span></div>
+        <div class="temp-item"><svg aria-label="Cloudy"><use href="#i-cloud2"/></svg><span class="tv">13°</span></div>
+        <div class="temp-item"><svg aria-label="Cloudy"><use href="#i-cloud2"/></svg><span class="tv">14°</span></div>
+        <div class="temp-item"><svg aria-label="Hail"><use href="#i-hail"/></svg><span class="tv">10°</span></div>
+        <div class="temp-item"><svg aria-label="Sunny"><use href="#i-sun"/></svg><span class="tv">19°</span></div>
+        <div class="temp-item"><svg aria-label="Partly cloudy"><use href="#i-cloud"/></svg><span class="tv">12°</span></div>
       </div>
-      <div class="big-temp-wrap">
-        <div class="big-temp">10<i>°C</i></div>
+      <div class="chart-wrap" aria-hidden="true">
+        <svg class="wave" viewBox="0 0 835 230" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="wg" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="white" stop-opacity=".0"/><stop offset="8%" stop-color="white" stop-opacity=".9"/>
+              <stop offset="88%" stop-color="white" stop-opacity=".9"/><stop offset="100%" stop-color="white" stop-opacity=".0"/>
+            </linearGradient>
+            <linearGradient id="wfade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="white" stop-opacity=".18"/><stop offset="100%" stop-color="white" stop-opacity=".03"/>
+            </linearGradient>
+            <clipPath id="wclip"><rect id="wclipr" x="0" y="0" width="835" height="230" transform-origin="0 115"/></clipPath>
+          </defs>
+          <path d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86 L835,230 L0,230 Z" fill="url(#wfade)" clip-path="url(#wclip)"/>
+          <path class="wline" d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86" fill="none" stroke="url(#wg)" stroke-width="6.2" stroke-opacity=".17" stroke-linecap="round" pathLength="1"/>
+          <path class="wline" d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86" fill="none" stroke="url(#wg)" stroke-width="4.6" stroke-opacity=".26" stroke-linecap="round" pathLength="1"/>
+          <path class="wline" d="M0,79 C55,70 100,55 150,62 C200,69 230,95 280,88 C330,81 360,60 410,58 C460,56 490,75 540,80 C590,85 620,68 670,72 C710,76 750,88 790,84 L835,86" fill="none" stroke="url(#wg)" stroke-width="3.4" stroke-opacity="1" stroke-linecap="round" pathLength="1"/>
+        </svg>
       </div>
-      <div class="metrics">
-        <div class="metric">
-          <svg aria-hidden="true"><use href="#i-wind"/></svg>
-          <span class="metric-val">19 mph</span>
-          <span class="metric-lbl">Wind</span>
-        </div>
-        <div class="metric">
-          <svg aria-hidden="true"><use href="#i-drop"/></svg>
-          <span class="metric-val">40%</span>
-          <span class="metric-lbl">Rain</span>
-        </div>
-        <div class="metric">
-          <svg aria-hidden="true"><use href="#i-gust"/></svg>
-          <span class="metric-val">15 km/h</span>
-          <span class="metric-lbl">Gust</span>
+      <div class="days">
+        <span>Sunday</span><span>Monday</span><span>Tuesday</span>
+        <span class="on">Wednesday</span><span>Thursday</span><span>Friday</span>
+      </div>
+    </section>
+
+    <aside class="rail" aria-label="Location weather cards">
+      <div class="card big" role="region" aria-label="Central Jakarta weather">
+        <div class="card-place"><svg aria-hidden="true"><use href="#i-pin"/></svg>Central Jakarta</div>
+        <div class="big-temp-wrap"><div class="big-temp">10<i>°C</i></div></div>
+        <div class="metrics">
+          <div class="metric"><svg aria-hidden="true"><use href="#i-wind"/></svg><span class="metric-val">19 mph</span><span class="metric-lbl">Wind</span></div>
+          <div class="metric"><svg aria-hidden="true"><use href="#i-drop"/></svg><span class="metric-val">40%</span><span class="metric-lbl">Rain</span></div>
+          <div class="metric"><svg aria-hidden="true"><use href="#i-gust"/></svg><span class="metric-val">15 km/h</span><span class="metric-lbl">Gust</span></div>
         </div>
       </div>
-    </div>
+      <div class="card row" role="region">
+        <div class="row-left"><div class="row-region">Indonesia</div><div class="row-city">North Jakarta</div><div class="row-cond">Mostly Sunny</div></div>
+        <div class="row-right"><svg width="38" height="38"><use href="#i-cloud"/></svg><span class="row-temp">12°</span></div>
+      </div>
+      <div class="card row" role="region">
+        <div class="row-left"><div class="row-region">Indonesia</div><div class="row-city">Bandung</div><div class="row-cond">Cloudy</div></div>
+        <div class="row-right"><svg width="38" height="38"><use href="#i-cloud2"/></svg><span class="row-temp">10°</span></div>
+      </div>
+      <div class="card row" role="region">
+        <div class="row-left"><div class="row-region">Indonesia</div><div class="row-city">South Jakarta</div><div class="row-cond">Sunny</div></div>
+        <div class="row-right"><svg width="38" height="38"><use href="#i-sun"/></svg><span class="row-temp">14°</span></div>
+      </div>
+    </aside>
 
-    <!-- Card B: North Jakarta -->
-    <div class="card row" role="region" aria-label="North Jakarta weather">
-      <div class="row-left">
-        <div class="row-region">Indonesia</div>
-        <div class="row-city">North Jakarta</div>
-        <div class="row-cond">Mostly Sunny</div>
-      </div>
-      <div class="row-right">
-        <svg width="38" height="38" aria-label="Partly cloudy"><use href="#i-cloud"/></svg>
-        <span class="row-temp">12°</span>
-      </div>
-    </div>
+  </div><!-- /dashboard -->
 
-    <!-- Card C: Bandung -->
-    <div class="card row" role="region" aria-label="Bandung weather">
-      <div class="row-left">
-        <div class="row-region">Indonesia</div>
-        <div class="row-city">Bandung</div>
-        <div class="row-cond">Cloudy</div>
+  <!-- ── PANEL: reports ───────────────────────────────────────────────── -->
+  <div data-panel="reports" class="tab-panel" role="tabpanel" aria-label="Reports">
+    <header class="header">
+      <div class="header-left">
+        <span class="hello">Weather</span>
+        <span class="who">Weekly Reports</span>
       </div>
-      <div class="row-right">
-        <svg width="38" height="38" aria-label="Cloudy"><use href="#i-cloud2"/></svg>
-        <span class="row-temp">10°</span>
+      <div class="header-tools">
+        <button class="tool" aria-label="Search"><svg><use href="#i-search"/></svg></button>
+        <button class="tool avatar-tool" aria-label="Profile">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces&q=80&auto=format" alt="Calfin Danang" loading="lazy" decoding="async" onerror="this.remove()" width="52" height="52">
+          <svg class="avatar-fb" aria-hidden="true" style="position:absolute"><use href="#i-avatar"/></svg>
+        </button>
       </div>
-    </div>
+    </header>
+    <section class="panel-content">
+      <h2 class="panel-title">Monthly Overview — September 2026</h2>
+      <div class="report-grid">
+        <div class="report-stat card"><div class="rs-label">Avg Temperature</div><div class="rs-value">24<i>°C</i></div><div class="rs-sub">↑ 2° vs last month</div></div>
+        <div class="report-stat card"><div class="rs-label">Rainy Days</div><div class="rs-value">12<i>d</i></div><div class="rs-sub">↓ 3 vs last month</div></div>
+        <div class="report-stat card"><div class="rs-label">Max Wind</div><div class="rs-value">34<i>mph</i></div><div class="rs-sub">Peak on Sep 18</div></div>
+        <div class="report-stat card"><div class="rs-label">Humidity</div><div class="rs-value">78<i>%</i></div><div class="rs-sub">Avg daily reading</div></div>
+      </div>
+      <div class="report-bar-wrap card">
+        <div class="rbar-title">Daily Precipitation (mm) — Past 7 Days</div>
+        <div class="rbar-chart">
+          <div class="rbar" style="--h:35%"><span>Wed</span></div>
+          <div class="rbar" style="--h:60%"><span>Thu</span></div>
+          <div class="rbar" style="--h:20%"><span>Fri</span></div>
+          <div class="rbar" style="--h:80%"><span>Sat</span></div>
+          <div class="rbar" style="--h:45%"><span>Sun</span></div>
+          <div class="rbar" style="--h:10%"><span>Mon</span></div>
+          <div class="rbar active" style="--h:55%"><span>Tue</span></div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /reports -->
 
-    <!-- Card D: South Jakarta -->
-    <div class="card row" role="region" aria-label="South Jakarta weather">
-      <div class="row-left">
-        <div class="row-region">Indonesia</div>
-        <div class="row-city">South Jakarta</div>
-        <div class="row-cond">Sunny</div>
+  <!-- ── PANEL: explore ───────────────────────────────────────────────── -->
+  <div data-panel="explore" class="tab-panel" role="tabpanel" aria-label="Explore Regions">
+    <header class="header">
+      <div class="header-left">
+        <span class="hello">Explore</span>
+        <span class="who">Regions &amp; Cities</span>
       </div>
-      <div class="row-right">
-        <svg width="38" height="38" aria-label="Sunny"><use href="#i-sun"/></svg>
-        <span class="row-temp">14°</span>
+      <div class="header-tools">
+        <button class="tool" aria-label="Search"><svg><use href="#i-search"/></svg></button>
+        <button class="tool avatar-tool" aria-label="Profile">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces&q=80&auto=format" alt="Calfin Danang" loading="lazy" decoding="async" onerror="this.remove()" width="52" height="52">
+          <svg class="avatar-fb" aria-hidden="true" style="position:absolute"><use href="#i-avatar"/></svg>
+        </button>
       </div>
-    </div>
+    </header>
+    <section class="panel-content">
+      <h2 class="panel-title">Indonesia — Regional Weather</h2>
+      <div class="explore-list">
+        <div class="explore-card card">
+          <div class="ec-top"><div class="ec-info"><div class="ec-region">West Java</div><div class="ec-city">Bandung</div></div><svg width="42" height="42"><use href="#i-cloud2"/></svg></div>
+          <div class="ec-bottom"><span class="ec-temp">18°C</span><div class="ec-metrics"><span><svg width="14" height="14"><use href="#i-wind"/></svg> 12 mph</span><span><svg width="14" height="14"><use href="#i-drop"/></svg> 55%</span></div></div>
+        </div>
+        <div class="explore-card card">
+          <div class="ec-top"><div class="ec-info"><div class="ec-region">East Java</div><div class="ec-city">Surabaya</div></div><svg width="42" height="42"><use href="#i-sun"/></svg></div>
+          <div class="ec-bottom"><span class="ec-temp">29°C</span><div class="ec-metrics"><span><svg width="14" height="14"><use href="#i-wind"/></svg> 8 mph</span><span><svg width="14" height="14"><use href="#i-drop"/></svg> 15%</span></div></div>
+        </div>
+        <div class="explore-card card">
+          <div class="ec-top"><div class="ec-info"><div class="ec-region">Bali</div><div class="ec-city">Denpasar</div></div><svg width="42" height="42"><use href="#i-cloud"/></svg></div>
+          <div class="ec-bottom"><span class="ec-temp">27°C</span><div class="ec-metrics"><span><svg width="14" height="14"><use href="#i-wind"/></svg> 14 mph</span><span><svg width="14" height="14"><use href="#i-drop"/></svg> 30%</span></div></div>
+        </div>
+        <div class="explore-card card">
+          <div class="ec-top"><div class="ec-info"><div class="ec-region">Sulawesi</div><div class="ec-city">Makassar</div></div><svg width="42" height="42"><use href="#i-hail"/></svg></div>
+          <div class="ec-bottom"><span class="ec-temp">22°C</span><div class="ec-metrics"><span><svg width="14" height="14"><use href="#i-wind"/></svg> 21 mph</span><span><svg width="14" height="14"><use href="#i-drop"/></svg> 70%</span></div></div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /explore -->
 
-  </aside>
+  <!-- ── PANEL: calendar ──────────────────────────────────────────────── -->
+  <div data-panel="calendar" class="tab-panel" role="tabpanel" aria-label="Calendar">
+    <header class="header">
+      <div class="header-left">
+        <span class="hello">Weather</span>
+        <span class="who">Calendar</span>
+      </div>
+      <div class="header-tools">
+        <button class="tool" aria-label="Search"><svg><use href="#i-search"/></svg></button>
+        <button class="tool avatar-tool" aria-label="Profile">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces&q=80&auto=format" alt="Calfin Danang" loading="lazy" decoding="async" onerror="this.remove()" width="52" height="52">
+          <svg class="avatar-fb" aria-hidden="true" style="position:absolute"><use href="#i-avatar"/></svg>
+        </button>
+      </div>
+    </header>
+    <section class="panel-content">
+      <h2 class="panel-title">October 2026</h2>
+      <div class="cal-grid card">
+        <div class="cal-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+        <div class="cal-body">
+          <div class="cal-day dim">28</div><div class="cal-day dim">29</div><div class="cal-day dim">30</div>
+          <div class="cal-day"><span>1</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>2</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>3</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>4</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day"><span>5</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day"><span>6</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>7</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>8</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>9</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>10</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>11</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>12</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>13</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day"><span>14</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day"><span>15</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>16</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>17</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>18</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>19</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>20</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day"><span>21</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>22</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>23</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>24</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>25</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day today"><span>26</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>27</span><svg width="16" height="16"><use href="#i-cloud2"/></svg></div>
+          <div class="cal-day"><span>28</span><svg width="16" height="16"><use href="#i-cloud"/></svg></div>
+          <div class="cal-day"><span>29</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>30</span><svg width="16" height="16"><use href="#i-sun"/></svg></div>
+          <div class="cal-day"><span>31</span><svg width="16" height="16"><use href="#i-hail"/></svg></div>
+          <div class="cal-day dim">1</div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /calendar -->
+
+  <!-- ── PANEL: settings ──────────────────────────────────────────────── -->
+  <div data-panel="settings" class="tab-panel" role="tabpanel" aria-label="Settings">
+    <header class="header">
+      <div class="header-left">
+        <span class="hello">App</span>
+        <span class="who">Settings</span>
+      </div>
+      <div class="header-tools">
+        <button class="tool avatar-tool" aria-label="Profile">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces&q=80&auto=format" alt="Calfin Danang" loading="lazy" decoding="async" onerror="this.remove()" width="52" height="52">
+          <svg class="avatar-fb" aria-hidden="true" style="position:absolute"><use href="#i-avatar"/></svg>
+        </button>
+      </div>
+    </header>
+    <section class="panel-content">
+      <h2 class="panel-title">Preferences</h2>
+      <div class="settings-list card">
+        <div class="setting-row">
+          <div class="sr-label"><div class="sr-title">Temperature Unit</div><div class="sr-sub">Celsius or Fahrenheit</div></div>
+          <div class="sr-toggle-group">
+            <button class="sr-opt active" onclick="this.parentNode.querySelectorAll('.sr-opt').forEach(b=>b.classList.remove('active'));this.classList.add('active')">°C</button>
+            <button class="sr-opt" onclick="this.parentNode.querySelectorAll('.sr-opt').forEach(b=>b.classList.remove('active'));this.classList.add('active')">°F</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="sr-label"><div class="sr-title">Wind Speed Unit</div><div class="sr-sub">mph or km/h</div></div>
+          <div class="sr-toggle-group">
+            <button class="sr-opt active" onclick="this.parentNode.querySelectorAll('.sr-opt').forEach(b=>b.classList.remove('active'));this.classList.add('active')">mph</button>
+            <button class="sr-opt" onclick="this.parentNode.querySelectorAll('.sr-opt').forEach(b=>b.classList.remove('active'));this.classList.add('active')">km/h</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="sr-label"><div class="sr-title">Notifications</div><div class="sr-sub">Severe weather alerts</div></div>
+          <label class="sr-switch"><input type="checkbox" checked><span class="sw-track"><span class="sw-thumb"></span></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="sr-label"><div class="sr-title">Daily Forecast Digest</div><div class="sr-sub">Morning summary email</div></div>
+          <label class="sr-switch"><input type="checkbox"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="sr-label"><div class="sr-title">Location</div><div class="sr-sub">Primary forecast location</div></div>
+          <div class="sr-loc"><svg width="14" height="14"><use href="#i-pin"/></svg> Central Jakarta</div>
+        </div>
+        <div class="setting-row">
+          <div class="sr-label"><div class="sr-title">App Version</div><div class="sr-sub">Aurora Weather</div></div>
+          <div class="sr-ver">v2.4.1</div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /settings -->
 
 </div><!-- /stage -->
+
+<!-- ══ TAB ROUTER ════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  /* Pip top-offsets (px at --u=1) from sidebar top for each nav item.
+     Sidebar padding-top = 22px, logo = 40px, margin-top after logo = 57.5px
+     → first icon center ≈ 22 + 40 + 57.5 + 20 = 139.5  minus pip half-height 14.5 = 125
+     Gap between items = 43px */
+  const PIP_TOPS = [125, 168, 211, 254, 297]; // px at --u=1
+
+  const tabs  = document.querySelectorAll('[data-tab]');
+  const panels= document.querySelectorAll('[data-panel]');
+  const pip   = document.getElementById('nav-pip');
+  const sidebar = document.querySelector('.sidebar');
+
+  /* Compute --u in pixels */
+  function getU() {
+    const s = getComputedStyle(document.documentElement);
+    /* compute via a dummy element */
+    const tmp = document.createElement('div');
+    tmp.style.cssText = 'position:absolute;width:calc(1*var(--u));height:0;visibility:hidden;';
+    document.body.appendChild(tmp);
+    const u = tmp.getBoundingClientRect().width;
+    document.body.removeChild(tmp);
+    return u || 1;
+  }
+
+  function activate(targetTab) {
+    const tabName = targetTab.dataset.tab;
+
+    /* 1. Update aria + active class on tabs */
+    tabs.forEach((t, i) => {
+      const isActive = t === targetTab;
+      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      t.setAttribute('aria-current', isActive ? 'page' : 'false');
+      t.classList.toggle('active', isActive);
+
+      /* 2. Move pip */
+      if (isActive) {
+        const u = getU();
+        const topPx = PIP_TOPS[i] * u;
+        sidebar.style.setProperty('--pip-top', topPx + 'px');
+      }
+    });
+
+    /* 3. Toggle panel visibility */
+    panels.forEach(p => {
+      p.classList.toggle('active', p.dataset.panel === tabName);
+    });
+  }
+
+  /* Attach click listeners */
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      activate(tab);
+    });
+    /* Keyboard: Enter / Space */
+    tab.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate(tab);
+      }
+      /* Arrow nav */
+      const arr = Array.from(tabs);
+      const idx = arr.indexOf(tab);
+      if (e.key === 'ArrowDown' && idx < arr.length - 1) { e.preventDefault(); arr[idx+1].focus(); }
+      if (e.key === 'ArrowUp'   && idx > 0)              { e.preventDefault(); arr[idx-1].focus(); }
+    });
+  });
+
+  /* Set initial pip position (dashboard = index 0) */
+  window.addEventListener('load', () => {
+    const u = getU();
+    sidebar.style.setProperty('--pip-top', (PIP_TOPS[0] * u) + 'px');
+  });
+})();
+</script>
 </body>
 </html>
