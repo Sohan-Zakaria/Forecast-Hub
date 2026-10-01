@@ -833,8 +833,8 @@ h1{
   /* Pip top-offsets (px at --u=1) from sidebar top for each nav item.
      Sidebar padding-top = 22px, logo = 40px, margin-top after logo = 57.5px
      → first icon center ≈ 22 + 40 + 57.5 + 20 = 139.5  minus pip half-height 14.5 = 125
-     Gap between items = 43px */
-  const PIP_TOPS = [125, 168, 211, 254, 297]; // px at --u=1
+     Step between items = icon height (40) + css gap (43) = 83px */
+  const PIP_TOPS = [125, 208, 291, 374, 457]; // px at --u=1
 
   const tabs  = document.querySelectorAll('[data-tab]');
   const panels= document.querySelectorAll('[data-panel]');
