@@ -250,21 +250,21 @@ h1{
 .panel-title{
   font-family:'Inter Tight','Inter',sans-serif;font-size:calc(32*var(--u));font-weight:500;
   letter-spacing:calc(-.5*var(--u));margin-bottom:calc(24*var(--u));
-  animation:riseIn .70s var(--e-out) .10s both;
 }
+.tab-panel.active .panel-title{animation:riseIn .70s var(--e-out) .10s both;}
 
 /* ── REPORTS ── */
 .report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(16*var(--u));margin-bottom:calc(20*var(--u));}
 .report-stat.card{padding:calc(18*var(--u));}
-.report-stat.card:nth-child(1){animation:slideR .80s var(--e-out) .18s both}
-.report-stat.card:nth-child(2){animation:slideR .80s var(--e-out) .26s both}
-.report-stat.card:nth-child(3){animation:slideR .80s var(--e-out) .34s both}
-.report-stat.card:nth-child(4){animation:slideR .80s var(--e-out) .42s both}
+.tab-panel.active .report-stat.card:nth-child(1){animation:slideR .80s var(--e-out) .18s both}
+.tab-panel.active .report-stat.card:nth-child(2){animation:slideR .80s var(--e-out) .26s both}
+.tab-panel.active .report-stat.card:nth-child(3){animation:slideR .80s var(--e-out) .34s both}
+.tab-panel.active .report-stat.card:nth-child(4){animation:slideR .80s var(--e-out) .42s both}
 .rs-label{font-size:calc(11.5*var(--u));font-weight:500;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:calc(.7*var(--u));}
 .rs-value{font-family:'Inter Tight','Inter',sans-serif;font-size:calc(48*var(--u));font-weight:500;letter-spacing:calc(-2*var(--u));margin-top:calc(8*var(--u));line-height:1;}
 .rs-value i{font-style:normal;font-size:calc(22*var(--u));vertical-align:super;margin-left:calc(2*var(--u));letter-spacing:0;}
 .rs-sub{font-size:calc(12*var(--u));color:rgba(255,255,255,.55);margin-top:calc(10*var(--u));}
-.report-bar-wrap.card{animation:riseIn .80s var(--e-out) .50s both;}
+.tab-panel.active .report-bar-wrap.card{animation:riseIn .80s var(--e-out) .50s both;}
 .rbar-title{font-size:calc(13*var(--u));font-weight:500;color:rgba(255,255,255,.70);margin-bottom:calc(20*var(--u));}
 .rbar-chart{display:flex;align-items:flex-end;gap:calc(12*var(--u));height:calc(130*var(--u));}
 .rbar{
@@ -284,7 +284,7 @@ h1{
 
 /* ── EXPLORE ── */
 .explore-list{display:grid;grid-template-columns:repeat(2,1fr);gap:calc(16*var(--u));}
-.explore-card.card{animation:slideR .80s var(--e-out) var(--ed,.20s) both;}
+.tab-panel.active .explore-card.card{animation:slideR .80s var(--e-out) var(--ed,.20s) both;}
 .explore-card.card:nth-child(1){--ed:.16s}
 .explore-card.card:nth-child(2){--ed:.26s}
 .explore-card.card:nth-child(3){--ed:.36s}
@@ -298,7 +298,8 @@ h1{
 .ec-metrics span{display:flex;align-items:center;gap:calc(5*var(--u));}
 
 /* ── CALENDAR ── */
-.cal-grid.card{padding:calc(20*var(--u));animation:riseIn .80s var(--e-out) .16s both;}
+.cal-grid.card{padding:calc(20*var(--u));}
+.tab-panel.active .cal-grid.card{animation:riseIn .80s var(--e-out) .16s both;}
 .cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:calc(4*var(--u));margin-bottom:calc(12*var(--u));}
 .cal-head span{text-align:center;font-size:calc(12*var(--u));font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:calc(.5*var(--u));}
 .cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:calc(4*var(--u));}
@@ -314,7 +315,8 @@ h1{
 .cal-day.today{background:rgba(255,255,255,.22);font-weight:700;}
 
 /* ── SETTINGS ── */
-.settings-list.card{animation:riseIn .80s var(--e-out) .16s both;padding:0;}
+.settings-list.card{padding:0;}
+.tab-panel.active .settings-list.card{animation:riseIn .80s var(--e-out) .16s both;}
 .setting-row{
   display:flex;align-items:center;justify-content:space-between;
   padding:calc(18*var(--u)) calc(22*var(--u));
@@ -873,7 +875,15 @@ h1{
 
     /* 3. Toggle panel visibility */
     panels.forEach(p => {
-      p.classList.toggle('active', p.dataset.panel === tabName);
+      const isTarget = p.dataset.panel === tabName;
+      if (isTarget && !p.classList.contains('active')) {
+        /* Force animation restart: briefly remove, reflow, re-add */
+        p.classList.remove('active');
+        void p.offsetWidth; /* trigger reflow */
+        p.classList.add('active');
+      } else if (!isTarget) {
+        p.classList.remove('active');
+      }
     });
   }
 
